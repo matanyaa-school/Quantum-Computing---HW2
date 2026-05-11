@@ -1,0 +1,8 @@
+# Default ignored files
+/LatexProject.iml
+/out/*
+!/out/main.pdf
+/auxil/
+/.idea/
+/src/packages/AllTheStuffOld.sty
+/src/test.tex

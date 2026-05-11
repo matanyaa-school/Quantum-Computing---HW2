@@ -1,0 +1,46 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{titles/HWTitle}
+
+% ====== Custom fields ======
+\newcommand{\assignment}[1]{\renewcommand{\@assignment}{#1}}
+\newcommand{\course}[2]{%
+    \renewcommand{\@coursenum}{#1}%
+    \renewcommand{\@coursename}{#2}%
+}
+\newcommand{\student}[2]{%
+    \renewcommand{\@studentname}{#1}%
+    \renewcommand{\@studentid}{#2}%
+}
+\newcommand{\dueDate}[1]{\renewcommand{\@dueDate}{#1}}
+
+% ====== Defaults (avoid errors if not set) ======
+\newcommand{\@assignment}{assignmentNum}
+\newcommand{\@coursenum}{courseNum}
+\newcommand{\@coursename}{courseName}
+\newcommand{\@studentname}{studentName}
+\newcommand{\@studentid}{studentID}
+\newcommand{\@dueDate}{dueDate}
+
+% ====== Custom title command ======
+\makeatletter
+\newcommand{\makemytitle}{
+    \begin{titlepage}
+        \begin{center}
+            \LARGE \textbf{\@coursenum{} - \@coursename{}} \par
+            \vspace{1.5cm}
+
+            \LARGE \textit{Homework Assignment \@assignment} \par
+            \vspace{1cm}
+
+            \normalfont
+            \large
+            \@studentname{}\\
+            \@studentid{}
+
+            \vspace{0.5cm}
+
+            Due: \@dueDate
+        \end{center}
+    \end{titlepage}
+}
+\makeatother
