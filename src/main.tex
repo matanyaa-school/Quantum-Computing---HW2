@@ -1,6 +1,7 @@
 \RequirePackage{packages/AllTheStuff}
 
 \documentclass[titlepage]{article}
+\usepackage{quantikz}
 
 % ====== settings ======
 \RequirePackage{packages/settings}
@@ -15,6 +16,22 @@
 % ====== starting document ======
 \begin{document}
     \makemytitle
+    \section*{Question 1 - Multiple qubits and quantum circuits}
+
+
+
+\begin{quantikz}
+&
+\end{quantikz}
+
+\[
+\begin{quantikz}
+\lstick{} & \gate{H} & \ctrl{1} & \gate{H} & \qw \\
+\lstick{} & \gate{H} & \targ{}  & \gate{H} & \qw
+\end{quantikz}
+\]
+
+
 
 
 \end{document}
