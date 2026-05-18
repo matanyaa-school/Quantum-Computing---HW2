@@ -1,0 +1,86 @@
+
+For each state $\ket{x_0,x_1}$ for $x_i\in \{0,1\}$, apply the following circuit:
+
+\[
+    \begin{quantikz}
+    \lstick{} & \gate{H} & \ctrl{1} & \gate{H} & \qw \\
+    \lstick{} & \gate{H} & \targ{}  & \gate{H} & \qw
+    \end{quantikz}
+\]
+Repeat the calculation with the following circuit:
+\[
+    \begin{quantikz}
+        \lstick{} & \targ{} & \qw \\
+        \lstick{} & \ctrl{-1} & \qw
+    \end{quantikz}
+\]
+Conclude that these two unitary transformations are equal, and that the intuition that the
+C-NOT gate does not change the control qubit is false, when we work in the ${\ket{+}, \ket{-}}$ basis.
+
+\subsection*{Solution}
+Let us define:
+\begin{align*}
+    H_2 &= H \otimes H\\
+    C &= CNOT\\
+    \tilde{C} &= CNOT_{2\rightarrow 1}\\
+\end{align*}
+Where $H$ is Hadamard operator, $CNOT$ is controlled-not where first qubit is control and second qubit is target. $CNOT_{2\rightarrow 1}$ is controlled-not where second qubit is control and first is the target.
+Applying the first circuit is equivalent to performing the $H_2 C H_2$ operator:\\
+
+For state $\ket{00}$:
+\begin{align*}
+    H_2 C H_2\ket{00}
+    &=H_2 C\ket{++}\\
+    &=\frac{1}{2}H_2 C(\ket{00}+\ket{01}+\ket{10}+\ket{11})\\
+    &=\frac{1}{2}H_2(\ket{00}+\ket{01}+\ket{11}+\ket{10})\\
+    &=H_2\ket{++}\\
+    &=\ket{00}
+\end{align*}
+
+For state $\ket{01}$:
+\begin{align*}
+    H_2 C H_2\ket{01}
+    &=H_2 C\ket{+-}\\
+    &=\frac{1}{2}H_2 C(\ket{00}-\ket{01}+\ket{10}-\ket{11})\\
+    &=\frac{1}{2}H_2(\ket{00}-\ket{01}+\ket{11}-\ket{10})\\
+    &=\frac{1}{2}H_2(\ket{0}(\ket{0}-\ket{1})+\ket{1}(\ket{1}-\ket{0}))\\
+    &=\frac{1}{2}H_2(\ket{0}-\ket{1}(\ket{0}-\ket{1})\\
+    &=H_2\ket{--}\\
+    &=\ket{11}
+\end{align*}
+
+For state $\ket{10}$:
+\begin{align*}
+    H_2 C H_2\ket{10}
+    &=H_2 C\ket{-+}\\
+    &=\frac{1}{2}H_2 C(\ket{00}+\ket{01}-\ket{10}-\ket{11})\\
+    &=\frac{1}{2}H_2(\ket{00}+\ket{01}-\ket{11}-\ket{10})\\
+    &=H_2\ket{-+}\\
+    &=\ket{10}
+\end{align*}
+
+For state $\ket{11}$:
+\begin{align*}
+    H_2 C H_2\ket{01}
+    &=H_2 C\ket{+-}\\
+    &=\frac{1}{2}H_2 C(\ket{00}-\ket{01}-\ket{10}+\ket{11})\\
+    &=\frac{1}{2}H_2(\ket{00}-\ket{01}-\ket{11}+\ket{10})\\
+    &=\frac{1}{2}H_2(\ket{0}(\ket{0}-\ket{1})-\ket{1}(\ket{1}-\ket{0}))\\
+    &=\frac{1}{2}H_2(\ket{0}+\ket{1}(\ket{0}-\ket{1})\\
+    &=H_2\ket{+-}\\
+    &=\ket{01}
+\end{align*}
+
+The second circuit is equivalent to performing the $\tilde{C}$ operator, this by definition gives us the following behavior:
+\begin{align*}
+    \tilde{C}\ket{00} &= \ket{00}\\
+    \tilde{C}\ket{01} &= \ket{11}\\
+    \tilde{C}\ket{10} &= \ket{10}\\
+    \tilde{C}\ket{11} &= \ket{01}\\
+\end{align*}
+Comparing the results of the two circuits we observe the same behavior for all 4 base states, therefore concluding they are equal.
+Furthermore, observing (for example) the behavior of the first circuit on the state $\ket{01}$ we notice that the following is true:
+\[
+    C\ket{+-} = \ket{--}
+\]
+This demonstrates a case in which, when operating in the $\{+,-\}$ basis, C-NOT changes the control (first) qubit
