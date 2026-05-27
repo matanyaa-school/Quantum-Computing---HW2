@@ -1,0 +1,42 @@
+\section*{question-4---grover’s-algorithm-with-an-unknown-number-of-marked-items}
+
+You are given access to an oracle with $K$ marked items, and $K$ is unknown.
+Design an algorithm that finds a marked item using $O\left(\sqrt{N/K}\right)$ queries, with probability more than $\frac{1}{2}$.
+Guidance:
+\begin{enumerate}
+    \item Show that when $K$ is known, there is an algorithm that finds the marked element with probability close to 1, with running time $O\left(\sqrt{N/K}\right)$.
+    \item Show that if $K$ lies between $2^j$ and $2^{j+1}$ for a known $j$, there is an algorithm that finds a marked element with probability at least $\frac{1}{2}$, with the same running time.
+    \item Iterate over the possible values of $j$ in a certain order, which gives a total running time of $O\left(\sqrt{N/K}\right)$ with probability $\frac{1}{2}$.
+\end{enumerate}
+
+\subsection*{Solution}
+\underline{$K$ is known:}\\
+If $K$ is known then we can mark $J=\{i\mid x_i=1\}$ the set of marked elements.
+Similar to Grover's algorithm we define:
+\begin{align*}
+    \ket{\alpha}=1/\sqrt{N-K}\sum_{i\in{0,1}^n\setminus J}\ket{i}\\
+    \ket{\beta}=1/\sqrt{K}\sum_{i\in J}\ket{i}\\
+\end{align*}
+Applying Grover's algorithm with $\lfloor \frac{\pi\sqrt{N/K}}{4}-1/2\rfloor$ repetitions yields the correct solution (finding a marked character) with optimum probability - close to 1 (the calculation is similar to that in the original algorithm where $K=1$).\\
+
+\underline{$K$ is between $2^j, 2^{j+1}$:}\\
+In this case we choose to iterate Grover's algorithm for $K=2^j$ and the success probability is:
+\begin{align*}
+    P(hit)&=\sin((2t+1)\theta)\\
+    =&\sin((2(\frac{\pi}{4}\sqrt{N/K}-1/2)+1)\theta)\\
+    =&\sin((\frac{\pi}{2}\sqrt{N/2^j})\sqrt{K/N})\\
+    =&\sin(\frac{\pi}{2}\sqrt{K/2^j})\\
+\end{align*}
+But since $2^j\le K\le 2^{j+1}$ then the probability is $P(hit)\ge 1/2$ since we are off by at most a factor of 2 and therefore the angle is in the range of $[\pi/4,3\pi/4]$.\\
+
+\underline{$K$ is unknown:}\\
+In this case we divide the space of possible $K$ into $\log N$ segments.
+In each segment K is bounded by $2^j\le K\le2^{j+1}$, and we run the algorithm from step 2 on each segment until we find a match.\\
+The running time for stage $j$ is $O\left(\sqrt{N/2^j}\right)$.
+Since the cost decreases as $j$ increases, we start guessing from $j=\log N$ and go down.
+Suppose the true value satisfies $2^{j^*}\le K<2^{j^*+1}$ and the total work up to stage $j^*$ is:
+\begin{equation*}
+    O\left(\sum_{j=0}^{j^*}\sqrt{N/2^j}\right) = O\left(\sqrt{N}\sum_{j=0}^{j^*}\sqrt{1/2^j}\right) = O\left(\sqrt{N/2^{j^*}}\right)
+\end{equation*}
+The last transition uses the fact that the sum is descending geometric sum and is bounded, and since K
+Now since $2^{j^*}\le K$ we get a final complexity of $O\left(\sqrt{N/K}\right)$

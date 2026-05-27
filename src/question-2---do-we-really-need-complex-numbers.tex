@@ -1,0 +1,56 @@
+\section*{Question 2 - Do we really need complex numbers}
+Prove that we can assume w.l.o.g.\ that all amplitudes in a quantum computation are real
+numbers!\\
+\textbf{Guidance:} Show that any quantum circuit on $n$ qubits that uses $t$ two-qubit gates with
+complex coefficients can be simulated exactly by a quantum circuit on $n + 1$ qubits, that uses
+at most $t$ three-qubit gates with real coefficients.
+Show that the probability of acceptance
+remains the same in your construction.
+Hint: Remember that we assume that the input for a quantum circuit is in the standard
+basis (so, in the base of our induction, we know that the state has only real amplitudes).
+Use the extra qubit to decide whether the original state is in the Imaginary or Real part,
+and adapt each gate to a gate with one more qubit, such that the new gate works in an
+equivalent way to the old one.
+More formally, suppose that at some step of the original
+circuit the state at that step is $\sum_x(a_x + ib_x)\ket{x}$, the state at that step in the new circuit
+should be $\sum_x a_x\ket{0x} + b_x\ket{1x}$.
+
+\subsection*{Solution}
+Let $M$ be a map that acts on states and operators as follows:
+\begin{align*}
+    &M(\ket{c_k}&=\sum_x(a_x+ib_x)\ket{x})=\ket{r_k}&=\sum_x a_x\ket{0x}+b_x\ket{1x}\\
+    &M(A+iB)=\begin{pmatrix*}
+                 A&-B\\
+                 B&A
+    \end{pmatrix*}
+\end{align*}
+To prove that we can assume w.l.o.g that all amplitudes in a quantum computation are real numbers we need to show that for any given circuit $c$ with complex amplitudes there exists an equivalent circuit $r$ with real amplitudes - meaning that $r$ and $c$ have the same probabilities \\
+
+\textbf{Induction on the number of gates:}\\
+\textbf{Base case ($k=0$):} The input state is a computational basis state, hence has real amplitudes.
+Therefore, by the quantum circuit definition, the circuit's input is in the standard basis and is classical - therefore the input's amplitudes are real hence the inputs of $c$ and $r$ are trivially equivalent (i.e. $c_0=r_0$).\\
+\textbf{Induction hypothesis:} Assume that for some $\ket{k}$ in circuit $c$, $M(\ket{k})$ in circuit $r$ gives the same probabilities\\
+\textbf{Induction step:} Let the next gate be $U_{k+1}$, then:\\
+\begin{align*}
+    \ket{c_{k+1}}&=U_{k+1}\ket{c_k}\\
+    &=(A+iB)(\sum_x a_x+ib_x)\ket{x}\\
+    &=(\sum_x(A_x a_x-B_x b_x)+i(A_x b_x+B_x a_x))\ket{x}\\
+    \ket{r_{k+1}}&=G_{k+1}^r\ket{r_k}\\
+    &=G_{k+1}^r\sum_x \left(a_x\ket{0x}+b_x\ket{1x}\right)\\
+    &=\left(\begin{matrix*}
+                A & -B\\
+                B & A\\
+    \end{matrix*}\right)\left(\sum_x a_x\ket{0x}+b_x\ket{1x}\right)\\
+    &=\sum_x \left((A_x a_x-B_x b_x)\ket{0x}+(A_x b_x +B_x a_x)\ket{1x}\right)\\
+\end{align*}
+From above, we get $M(\ket{c_{k+1}})=\ket{r_{k+1}}$.
+The probability to get state $\ket{j}$ in circuit $c$ is:
+\begin{equation*}
+    \braket{k}{c_{k+1}}=\abs{(A_x a_x-B_x b_x)+i(A_x b_x+B_X a_x)}^2=(A_x a_x-B_x b_x)^2+(A_x b_x+B_X a_x)^2
+\end{equation*}
+The probability to get state $\ket{j}$ in circuit $r$ is:
+\begin{equation*}
+    \braket{k}{r_{k+1}}=(A_x a_x-B_x b_x)^2+(A_x b_x+B_X a_x)^2
+\end{equation*}
+Which results in the same probability.
+QED\@.

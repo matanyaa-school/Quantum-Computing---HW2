@@ -1,0 +1,29 @@
+\section*{Question 3 - Reconstructing a matrix}
+Let $A$ be a binary $n\times n$ matrix.
+For $x, y \in \{0, 1\}^n$, let:
+\begin{equation*}
+    f(x, y) = x^T Ay mod 2 = \sum_{i,j}(A_{ij}x_i y_j) mod 2.
+\end{equation*}
+
+Convince yourself (there is no need to submit this argument) that there exists a simple
+classical algorithm that reconstructs $A$ using $n^2$ queries to $f$, and that there is no algorithm
+that can do that with fewer classical queries.
+
+Find a quantum algorithm that reconstructs the matrix $A$ using $O(n)$ queries to the
+corresponding quantum phase oracle.
+Recall that the quantum phase oracle for $f$ acts as follows:
+\begin{equation*}
+    \forall x,y \in \{0, 1\}^n, V_f \ket{x,y}= (-1)^{\sum_{i,j}A_{i,j}x_i y_j mod 2}\ket{x,y}
+\end{equation*}
+
+\subsection*{Solution}
+The main idea is to query each column of $A$ with Bernstein–Vazirani algorithm:
+\begin{enumerate}
+    \item Prepare the state $\ket{0}^{\times n}\ket{e_j}$ where $e_j$ is the j-th standard basis vector.
+    \item Apply Hadamard on the $n \ket{0}$ qubits to get: $\frac{1}{\sqrt{2^n}}\sum_{x\in\{0,1\}^n}\ket{x}\ket{e_j}$
+    \item Apply the oracle $V_f$ to get: $\frac{1}{\sqrt{2^n}}\sum_x (-1)^{s_j\cdot x}\ket{x}\ket{e_j}$ - the $e_j$ extracts the j-th column which is queried by the oracle
+    \item Apply Hadamard again on the first $n$ qubits and measure - the answer is column j.
+    \item Repeat the algorithm for every $j$ - this is repeated $n$ times, each time receiving another column, and therefore has complexity of $O(n)$
+\end{enumerate}
+
+
